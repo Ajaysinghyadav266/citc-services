@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\VpnController;
+use App\Http\Controllers\WebHostingRequestController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -26,5 +27,9 @@ Route::get('/vpn-success', function () {
     return view('vpn-success');
 })->middleware('auth');
 
+
+Route::get('/web-host', [WebHostingRequestController::class, 'create'])->middleware('auth');;
+
+Route::post('/submit', [WebHostingRequestController::class, 'store'])->name('hosting.store');
 // Logout
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
