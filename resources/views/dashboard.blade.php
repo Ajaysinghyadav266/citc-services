@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard | IIT Indore</title>
+    <title>Dashboard | IIT INDORE</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @keyframes blob {
