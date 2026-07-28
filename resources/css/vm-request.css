@@ -1,0 +1,439 @@
+/* ==========================================================================
+   VM Request Application — stylesheet
+   Path in Laravel app: resources/css/vm-request.css
+   ========================================================================== */
+
+:root {
+    --ink: #1b2430;
+    --ink-soft: #5b6675;
+    --line: #d9dee5;
+    --line-soft: #eceff3;
+    --surface: #ffffff;
+    --canvas: #f3f5f8;
+    --band: #e7ecf5;
+    --band-text: #2f4270;
+    --brand: #2f5fb3;
+    --brand-dark: #234a91;
+    --brand-soft: #eaf0fb;
+    --danger: #c4342f;
+    --danger-soft: #fbe9e8;
+    --ok: #1f7a4d;
+    --radius: 6px;
+    --font: "Segoe UI", "Inter", Roboto, Helvetica, Arial, sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+}
+.vm-navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 32px;
+    background: #ffffff;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.vm-logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+}
+
+.logo-circle {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: #2563eb;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 700;
+}
+
+.logo-text {
+    font-size: 20px;
+    font-weight: 600;
+    color: #1f2937;
+}
+
+.profile-dropdown {
+    position: relative;
+}
+
+.profile-btn {
+    border: none;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    padding: 8px 14px;
+    border-radius: 10px;
+    transition: 0.25s;
+}
+
+.profile-btn:hover {
+    background: #f3f4f6;
+}
+
+.profile-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #2563eb;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+.profile-name {
+    font-weight: 500;
+    color: #374151;
+}
+
+.dropdown-menu {
+    position: absolute;
+    right: 0;
+    top: 60px;
+    width: 180px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+    display: none;
+    overflow: hidden;
+}
+
+.dropdown-menu.show {
+    display: block;
+}
+
+.dropdown-menu a,
+.dropdown-menu button {
+    width: 100%;
+    padding: 12px 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border: none;
+    background: none;
+    text-decoration: none;
+    color: #374151;
+    cursor: pointer;
+    font-size: 15px;
+}
+
+.dropdown-menu a:hover,
+.dropdown-menu button:hover {
+    background: #f5f5f5;
+}
+
+.login-btn {
+    background: #2563eb;
+    color: #fff;
+    text-decoration: none;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-weight: 600;
+}
+
+.login-btn:hover {
+    background: #1d4ed8;
+}
+body.vmreq-body {
+    margin: 0;
+    font-family: var(--font);
+    background: var(--canvas);
+    color: var(--ink);
+    -webkit-font-smoothing: antialiased;
+}
+
+.vmreq-shell {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 24px 16px 64px;
+}
+
+/* Breadcrumb / top bar --------------------------------------------------- */
+.vmreq-crumbs {
+    font-size: 13px;
+    color: var(--ink-soft);
+    margin-bottom: 10px;
+}
+.vmreq-crumbs span + span::before {
+    content: "›";
+    margin: 0 6px;
+    color: var(--line);
+}
+
+.vmreq-card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: 0 1px 2px rgba(20, 30, 50, 0.04);
+}
+
+.vmreq-titlebar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--line);
+}
+.vmreq-titlebar h1 {
+    font-size: 18px;
+    margin: 0;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.vmreq-status {
+    font-size: 12px;
+    font-weight: 600;
+    padding: 3px 9px;
+    border-radius: 999px;
+    background: var(--danger-soft);
+    color: var(--danger);
+    letter-spacing: 0.2px;
+}
+.vmreq-status.is-saved {
+    background: #e5f4ea;
+    color: var(--ok);
+}
+
+.btn {
+    font: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 9px 20px;
+    border-radius: var(--radius);
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition:
+        background 0.15s ease,
+        box-shadow 0.15s ease,
+        opacity 0.15s ease;
+}
+.btn-primary {
+    background: var(--brand);
+    color: #fff;
+}
+.btn-primary:hover {
+    background: var(--brand-dark);
+}
+.btn-primary:disabled {
+    background: #9db3d8;
+    cursor: not-allowed;
+}
+.btn-primary:focus-visible,
+.btn:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+    outline: 3px solid #9fc0f0;
+    outline-offset: 1px;
+}
+
+/* Section band ------------------------------------------------------------ */
+.vmreq-band {
+    background: var(--band);
+    color: var(--band-text);
+    text-align: center;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+    padding: 10px 12px;
+    margin: 0;
+}
+
+.vmreq-fields {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px 28px;
+    padding: 24px 24px 8px;
+}
+.vmreq-fields.is-tight {
+    padding-top: 20px;
+}
+
+@media (max-width: 720px) {
+    .vmreq-fields {
+        grid-template-columns: 1fr;
+    }
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+}
+.field.span-2 {
+    grid-column: 1 / -1;
+}
+
+.field label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink);
+}
+.field label .req {
+    color: var(--danger);
+    margin-left: 2px;
+}
+
+.field .hint {
+    font-size: 12px;
+    color: var(--ink-soft);
+}
+
+.field input[type="text"],
+.field input[type="email"],
+.field input[type="tel"],
+.field input[type="number"],
+.field input[type="date"],
+.field select,
+.field textarea {
+    font: inherit;
+    font-size: 14px;
+    padding: 9px 11px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: var(--surface);
+    color: var(--ink);
+    width: 100%;
+}
+.field textarea {
+    resize: vertical;
+    min-height: 78px;
+}
+
+.field input:disabled,
+.field input[readonly] {
+    background: var(--line-soft);
+    color: var(--ink-soft);
+}
+
+.field select {
+    appearance: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8'><path d='M1 1l5 5 5-5' fill='none' stroke='%235b6675' stroke-width='1.6'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    padding-right: 32px;
+}
+
+.field.is-invalid input,
+.field.is-invalid select,
+.field.is-invalid textarea {
+    border-color: var(--danger);
+    background: var(--danger-soft);
+}
+
+.field-error {
+    font-size: 12px;
+    color: var(--danger);
+    min-height: 14px;
+    display: none;
+}
+.field.is-invalid .field-error {
+    display: block;
+}
+
+/* Footer notice ------------------------------------------------------------ */
+.vmreq-notice {
+    margin: 8px 24px 0;
+    padding: 12px 14px;
+    background: var(--danger-soft);
+    border: 1px solid #f0c9c7;
+    border-radius: var(--radius);
+    color: #8a2622;
+    font-size: 12.5px;
+    line-height: 1.5;
+}
+
+.vmreq-confirm {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin: 16px 24px 0;
+    font-size: 13px;
+}
+.vmreq-confirm input {
+    margin-top: 3px;
+    width: 16px;
+    height: 16px;
+}
+.vmreq-confirm.is-invalid {
+    color: var(--danger);
+}
+
+.vmreq-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    padding: 22px 24px 26px;
+}
+
+/* Toast / Snackbar */
+.vmreq-toast {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    min-width: 330px;
+    max-width: 420px;
+
+    padding: 16px 22px;
+
+    color: #fff;
+    font-size: 14px;
+    font-weight: 500;
+
+    border-radius: 18px;
+
+    backdrop-filter: blur(18px);
+
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.25);
+
+    opacity: 0;
+    transform: translateY(40px);
+
+    transition: 0.35s ease;
+
+    z-index: 9999;
+}
+
+.vmreq-toast.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Loading */
+.vmreq-toast.is-loading {
+    background: rgba(255, 255, 255, 0.95);
+    color: #1f2937;
+
+    border: 1px solid #e5e7eb;
+
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
+
+    backdrop-filter: blur(16px);
+}
+/* Success */
+.vmreq-toast.is-success {
+    background: linear-gradient(135deg, #22c55e, #16a34a);
+    color: #fff;
+}
+/* Error */
+.vmreq-toast.is-error {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+    color: #fff;
+}
