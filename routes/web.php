@@ -4,7 +4,8 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\VpnController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
+// Login Page
+Route::get('/login', function () {
     return view('welcome');
 });
 
@@ -12,7 +13,7 @@ Route::get('/', function () {
 Route::get('/login/google', [AuthController::class, 'redirectToGoogle']);
 Route::get('/login/google/callback', [AuthController::class, 'handleGoogleCallback']);
 
-// Dashboard
+// User Dashboard
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware('auth');
@@ -21,10 +22,20 @@ Route::get('/dashboard', function () {
 Route::get('/vpn-form', [VpnController::class, 'index'])->middleware('auth');
 Route::post('/vpn-submit', [VpnController::class, 'store'])->middleware('auth');
 
-// Success Page
+// API se approver auto fetch
+Route::get('/get-approver', [VpnController::class, 'getApprover']);
+
+// ✅ Approver Dashboard
+Route::get('/approver-dashboard', [VpnController::class, 'approverDashboard']);
+
+
+
+// Logout
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+// VPN Success
 Route::get('/vpn-success', function () {
     return view('vpn-success');
 })->middleware('auth');
 
-// Logout
-Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
