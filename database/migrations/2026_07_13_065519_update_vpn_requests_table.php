@@ -7,7 +7,12 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::table('vpn_requests', function (Blueprint $table) {
+        Schema::create('vpn_requests', function (Blueprint $table) {
+
+            $table->id();
+
+            $table->string('name');
+            $table->string('email');
 
             $table->string('contact')->nullable();
             $table->string('operating_system')->nullable();
@@ -18,29 +23,17 @@ return new class extends Migration
             $table->text('purpose')->nullable();
             $table->text('resources')->nullable();
 
-            $table->string('faculty_name')->nullable();
-            $table->string('faculty_email')->nullable();
-            $table->string('department')->nullable();
+            $table->string('approver_email')->nullable();
+            $table->string('approver_name')->nullable();
+            $table->string('approver_designation')->nullable();
+            $table->string('approver_department')->nullable();
 
+            $table->timestamps();
         });
     }
 
     public function down(): void
     {
-        Schema::table('vpn_requests', function (Blueprint $table) {
-
-            $table->dropColumn([
-                'contact',
-                'operating_system',
-                'start_date',
-                'end_date',
-                'purpose',
-                'resources',
-                'faculty_name',
-                'faculty_email',
-                'department'
-            ]);
-
-        });
+        Schema::dropIfExists('vpn_requests');
     }
 };
