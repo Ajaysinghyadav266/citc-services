@@ -14,6 +14,7 @@ class AuthController extends Controller
     //  GOOGLE REDIRECT
     public function redirectToGoogle()
     {
+        
         return Socialite::driver('google')->redirect();
     }
 
@@ -21,7 +22,10 @@ class AuthController extends Controller
     public function handleGoogleCallback()
     {
         try {
-            $googleUser = Socialite::driver('google')->stateless()->user();
+            /** @var \Laravel\Socialite\Two\GoogleProvider $provider */
+            $provider = Socialite::driver('google');
+
+            $googleUser = $provider->stateless()->user();
             $email = strtolower(trim($googleUser->email));
 
             //  ONLY IITI EMAIL ALLOWED
