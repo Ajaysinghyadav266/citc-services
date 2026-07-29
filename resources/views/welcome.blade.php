@@ -55,7 +55,8 @@
             Login with Google
         </a>
 
-        <p class="mt-6 text-slate-400 text-[11.5px]">Use your official IIT Indore Google account</p>
+        <p class="mt-5 text-slate-400 text-[11.5px]">Use your official IIT Indore Google account</p>
+        <a href="/" class="mt-3 text-blue-500 text-xs hover:underline">← Back to Home</a>
     </div>
 
 </body>
