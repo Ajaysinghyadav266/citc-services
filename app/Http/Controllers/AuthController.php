@@ -11,10 +11,19 @@ use Illuminate\Support\Facades\Http;
 
 class AuthController extends Controller
 {
-    //  GOOGLE REDIRECT
+    //  GOOGLE REDIRECT — student login path
+    //  Always clears the approver flag so a student never accidentally
+    //  lands on the approver dashboard after visiting /approver-login first.
     public function redirectToGoogle()
     {
-        
+        session()->forget('approver_login_intent');
+        return Socialite::driver('google')->redirect();
+    }
+
+    //  GOOGLE REDIRECT — approver login path (called from /approver-login/google)
+    public function redirectToGoogleAsApprover()
+    {
+        session(['approver_login_intent' => true]);
         return Socialite::driver('google')->redirect();
     }
 
@@ -54,17 +63,16 @@ class AuthController extends Controller
             //  LOGIN
             Auth::login($user);
 
-          
+            // ── APPROVER LOGIN INTENT ─────────────────────────────
+            if (session('approver_login_intent')) {
+                session(['approver_login_intent' => null]);
+                // Delegate to ApproverController for level detection & redirect
+                return app(\App\Http\Controllers\ApproverController::class)->handleCallback();
+            }
 
-//  VERY IMPORTANT
-session()->forget('url.intended');
-
-if ($userData) {
-    return redirect('/approver-dashboard');
-}
-
-return redirect('/dashboard');
-        } 
+            // ── REGULAR USER LOGIN ────────────────────────────────
+            return redirect()->intended('/dashboard');
+        }
         catch (\Exception $e) {
             return redirect('/login')->with('error', 'Login failed! ' . $e->getMessage());
         }
