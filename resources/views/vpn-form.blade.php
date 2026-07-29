@@ -22,7 +22,7 @@
              class="h-28 w-auto">
     </div>
 
-    <form action="/vpn-submit" method="POST">
+    <form id="vpnForm"  action="/vpn-submit" method="POST">
     @csrf
 
     <!-- USER DETAILS -->
@@ -87,42 +87,36 @@
             class="w-full border rounded p-2"></textarea>
     </div>
 
-    <!-- FACULTY -->
-    <h2 class="text-lg font-semibold text-gray-700 mt-6 mb-2">Faculty Details</h2>
+    <!-- APPROVER DETAILS -->
+<h2 class="text-lg font-semibold text-gray-700 mt-6 mb-2">Approver Details</h2>
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 
-        <div>
-            <label class="text-sm font-medium">Faculty Name</label>
-            <input type="text" name="faculty_name" required
-                class="w-full border rounded p-2">
-        </div>
-
-        <div>
-            <label class="text-sm font-medium">Faculty Email</label>
-            <input type="email" name="faculty_email" required
-                class="w-full border rounded p-2">
-        </div>
-
-        <div>
-            <label class="text-sm font-medium">Department</label>
-            <select name="department" required
-                class="w-full border rounded p-2 focus:ring-2 focus:ring-blue-400">
-                <option value="" disabled selected>-- Select Department --</option>
-                <option value="DAASE">Astronomy, Astrophysics and Space Engineering</option>
-                <option value="BSBE">Biosciences and Biomedical Engineering</option>
-                <option value="Chemistry">Chemistry</option>
-                <option value="CE">Civil Engineering</option>
-                <option value="CSE">Computer Science and Engineering</option>
-                <option value="EE">Electrical Engineering</option>
-                <option value="HSS">Humanities and Social Sciences</option>
-                <option value="Mathematics">Mathematics</option>
-                <option value="ME">Mechanical Engineering</option>
-                <option value="MEMS">Metallurgical Engineering and Materials Science</option>
-            </select>
-        </div>
-
+    <div>
+        <label class="text-sm font-medium">Approver Email</label>
+        <input type="email" id="approver_email" name="approver_email"
+            class="w-full border rounded p-2 focus:ring-2 focus:ring-blue-400">
     </div>
+
+    <div>
+        <label class="text-sm font-medium">Approver Name</label>
+        <input type="text" id="approver_name" name="approver_name"
+            class="w-full border rounded p-2 bg-gray-100" readonly>
+    </div>
+
+    <div>
+        <label class="text-sm font-medium">Designation</label>
+        <input type="text" id="approver_designation" name="approver_designation"
+            class="w-full border rounded p-2 bg-gray-100" readonly>
+    </div>
+
+    <div>
+        <label class="text-sm font-medium">Department</label>
+        <input type="text" id="approver_department" name="approver_department"
+            class="w-full border rounded p-2 bg-gray-100" readonly>
+    </div>
+
+</div>
 
     <!-- DISCLAIMER -->
     <div class="mt-6 bg-gray-50 p-4 rounded border text-sm text-gray-700">
@@ -160,6 +154,47 @@
 
     </form>
 </div>
+
+
+
+<script>
+document.getElementById('approver_email').addEventListener('blur', function() {
+
+    let email = this.value;
+
+    if(email !== "") {
+
+        fetch(`/get-approver?email=${email}`)
+        .then(res => res.json())
+        .then(data => {
+
+            document.getElementById('approver_name').value = data.name || '';
+            document.getElementById('approver_designation').value = data.designation || '';
+            document.getElementById('approver_department').value = data.department || '';
+
+        })
+        .catch(error => console.log("Error:", error));
+
+    }
+});
+</script>
+
+
+
+<script>
+document.getElementById('vpnForm').addEventListener('submit', function(e) {
+
+    let name = document.getElementById('approver_name').value;
+    let designation = document.getElementById('approver_designation').value;
+    let department = document.getElementById('approver_department').value;
+
+    if(name === "" || designation === "" || department === "") {
+        e.preventDefault();
+        alert("Please fill all details of approver");
+    }
+
+});
+</script>
 
 </body>
 </html>
