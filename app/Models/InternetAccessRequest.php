@@ -4,21 +4,22 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class WebHostingRequest extends Model
+class InternetAccessRequest extends Model
 {
-    protected $table = 'web_hosting_requests';
-
     protected $fillable = [
-        'institute_email',
-        'department_name',
-        'owner_name',
-        'mobile_number',
-        'employee_category',
-        'website_name',
-        'suggested_domain_name',
+        'name',
+        'roll_no',
+        'email',
+        'phone',
+        'approver_email',
+        'approver_name',
+        'approver_designation',
+        'approver_department',
+        'device_type',
         'operating_system',
-        'purpose',
-        'comment',
+        'mac_address',
+        'connection_duration',
+        'status',
         // Approval workflow
         'approval_status',
         'approver1_email',
@@ -42,3 +43,4 @@ class WebHostingRequest extends Model
         'rejected_at' => 'datetime',
     ];
 }
+

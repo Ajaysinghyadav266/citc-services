@@ -1,0 +1,80 @@
+@extends('layouts.approver')
+
+@section('title', 'Completed — CITC')
+
+@section('content')
+
+<div class="pt-2">
+    <div class="mb-6">
+        <h1 class="text-2xl font-bold text-gray-900">Completed Requests</h1>
+        <p class="text-gray-500 text-sm mt-1">Services successfully provisioned by the CITC team</p>
+    </div>
+
+    @if(count($requests) === 0)
+    <div class="bg-white border border-gray-200 rounded-2xl p-12 text-center shadow-sm">
+        <div class="w-16 h-16 rounded-full bg-blue-50 flex items-center justify-center mx-auto mb-4">
+            <svg class="w-8 h-8 text-blue-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>
+            </svg>
+        </div>
+        <p class="text-gray-500 font-medium">No completed requests yet</p>
+        <p class="text-gray-400 text-sm mt-1">Fulfilled requests will appear here.</p>
+    </div>
+    @else
+    <div class="bg-white border border-gray-200 rounded-2xl shadow-sm overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="w-full text-sm">
+                <thead>
+                    <tr class="border-b border-gray-100 bg-gray-50">
+                        <th class="text-left px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Requester</th>
+                        <th class="text-left px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Service</th>
+                        <th class="text-left px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Submitted</th>
+                        <th class="text-left px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">Completed</th>
+                        <th class="text-left px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wide">By</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-50">
+                    @foreach($requests as $r)
+                    @php
+                        $requesterName  = $r->name ?? $r->owner_name ?? '—';
+                        $requesterEmail = $r->email ?? $r->institute_email ?? '—';
+                        $typeColors = [
+                            'VPN'             => 'bg-indigo-100 text-indigo-700',
+                            'Internet Access' => 'bg-cyan-100 text-cyan-700',
+                            'VM Request'      => 'bg-green-100 text-green-700',
+                            'Web Hosting'     => 'bg-orange-100 text-orange-700',
+                        ];
+                        $tc = $typeColors[$r->_type] ?? 'bg-gray-100 text-gray-600';
+                    @endphp
+                    <tr class="hover:bg-gray-50 transition-colors">
+                        <td class="px-6 py-4">
+                            <div class="flex items-center gap-3">
+                                <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-700 text-xs font-bold shrink-0">
+                                    {{ strtoupper(substr($requesterName, 0, 1)) }}
+                                </div>
+                                <div>
+                                    <p class="font-medium text-gray-900">{{ $requesterName }}</p>
+                                    <p class="text-gray-400 text-xs">{{ $requesterEmail }}</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="text-xs font-semibold px-2.5 py-1 rounded-full {{ $tc }}">{{ $r->_type }}</span>
+                        </td>
+                        <td class="px-6 py-4 text-gray-500 text-xs">
+                            {{ $r->created_at?->format('d M Y') ?? '—' }}
+                        </td>
+                        <td class="px-6 py-4 text-gray-500 text-xs">
+                            {{ $r->citc_completed_at?->format('d M Y, h:i A') ?? '—' }}
+                        </td>
+                        <td class="px-6 py-4 text-gray-600 text-xs">{{ $r->citc_completed_by ?? '—' }}</td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    </div>
+    @endif
+</div>
+
+@endsection
