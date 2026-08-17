@@ -19,6 +19,8 @@ class InternetAccessController extends Controller
     {
         // VALIDATION
         $request->validate([
+            'name'                => 'required',
+            'email'               => 'required|email',
             'roll_no'             => 'required',
             'phone'               => 'required|digits:10',
             'approver_email'      => 'required|email',
@@ -33,6 +35,9 @@ class InternetAccessController extends Controller
             ],
             'connection_duration' => 'required|in:semester,annual,permanent',
         ], [
+            'name.required'                 => 'Name is required.',
+            'email.required'                => 'Email is required.',
+            'email.email'                   => 'Please enter a valid email address.',
             'roll_no.required'              => 'Roll No / Employee ID is required.',
             'phone.required'                => 'Phone number is required.',
             'phone.digits'                  => 'Phone number must be exactly 10 digits.',
@@ -51,8 +56,8 @@ class InternetAccessController extends Controller
 
         // SAVE
         InternetAccessRequest::create([
-            'name'                 => auth()->user()->name,
-            'email'                => auth()->user()->email,
+            'name'                 => $request->name,
+            'email'                => $request->email,
             'roll_no'              => $request->roll_no,
             'phone'                => $request->phone,
             'approver_email'       => $request->approver_email,
@@ -68,9 +73,9 @@ class InternetAccessController extends Controller
 
         // MAIL — notify applicant
         Mail::raw(
-            "Dear " . auth()->user()->name . ",\n\nYour Internet Access request has been submitted successfully and is pending approval.\n\nRegards,\nIIT Indore CITC",
-            function ($msg) {
-                $msg->to(auth()->user()->email)
+            "Dear " . $request->name . ",\n\nYour Internet Access request has been submitted successfully and is pending approval.\n\nRegards,\nIIT Indore CITC",
+            function ($msg) use ($request) {
+                $msg->to($request->email)
                     ->subject('Internet Access Request Submitted — IIT Indore');
             }
         );

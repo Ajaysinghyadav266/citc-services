@@ -471,9 +471,8 @@ textarea:focus-visible {
         <!-- LEFT: IIT Indore Identity -->
         <div style="display:flex;align-items:center;gap:12px;flex-shrink:0;">
             <a href="{{ session('approver_level') ? route('approver.dashboard') : '/dashboard' }}">
-                <img src="http://beta.iiti.ac.in/images/logo.png"
-                     alt="IIT Indore Emblem" style="height:48px;width:auto;"
-                     onerror="this.src='https://www.iiti.ac.in/public/themes/iitindore/demos/update-logo.png'">
+                <img src="{{ asset('logo.png') }}"
+                     alt="IIT Indore Emblem" style="height:48px;width:auto;">
             </a>
             <div style="width:1px;height:40px;background:#BF7771;margin:0 4px;"></div>
             <div style="line-height:1.2;">
