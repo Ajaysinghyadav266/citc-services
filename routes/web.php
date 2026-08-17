@@ -62,9 +62,9 @@ Route::get('/web-host', [WebHostingRequestController::class, 'create'])->middlew
 Route::post('/submit', [WebHostingRequestController::class, 'store'])->name('hosting.store');
 
 // Internet Access Request form
-Route::get('/internet-access', [InternetAccessController::class, 'create'])->middleware('auth')->name('internet-access.create');
-Route::post('/internet-access', [InternetAccessController::class, 'store'])->middleware('auth')->name('internet-access.store');
-Route::get('/internet-access/success', [InternetAccessController::class, 'success'])->middleware('auth')->name('internet-access.success');
+Route::get('/internet-access', [InternetAccessController::class, 'create'])->name('internet-access.create');
+Route::post('/internet-access', [InternetAccessController::class, 'store'])->name('internet-access.store');
+Route::get('/internet-access/success', [InternetAccessController::class, 'success'])->name('internet-access.success');
 
 // My Requests
 Route::get('/my-requests', [MyRequestsController::class, 'index'])->middleware('auth')->name('my-requests');

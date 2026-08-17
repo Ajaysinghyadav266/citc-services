@@ -15,7 +15,7 @@
 
     {{-- IIT Indore Logo top-left --}}
     <div class="fixed top-6 left-6 z-10 flex items-center gap-2.5">
-        <img src="https://www.iiti.ac.in/public/themes/iitindore/demos/update-logo.png"
+        <img src="{{ asset('logo.png') }}"
              alt="IIT Indore Logo"
              class="h-11 w-auto">
         <div class="leading-tight text-left">
