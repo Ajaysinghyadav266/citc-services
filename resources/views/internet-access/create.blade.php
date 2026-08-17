@@ -32,15 +32,15 @@
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 
         <div>
-            <label class="text-sm font-medium text-gray-600">Full Name</label>
-            <input type="text" value="{{ auth()->user()->name }}" readonly
-                class="w-full border border-gray-200 rounded-lg p-2.5 bg-gray-50 text-gray-500 text-sm mt-1">
+            <label class="text-sm font-medium text-gray-600">Full Name <span class="text-red-500">*</span></label>
+            <input type="text" name="name" value="{{ old('name', auth()->user()?->name) }}" required {{ auth()->check() ? 'readonly' : '' }}
+                class="w-full border {{ auth()->check() ? 'border-gray-200 bg-gray-50 text-gray-500' : 'border-gray-300' }} rounded-lg p-2.5 text-sm mt-1 focus:ring-2 focus:ring-blue-400 focus:outline-none">
         </div>
 
         <div>
-            <label class="text-sm font-medium text-gray-600">Institutional Email</label>
-            <input type="email" value="{{ auth()->user()->email }}" readonly
-                class="w-full border border-gray-200 rounded-lg p-2.5 bg-gray-50 text-gray-500 text-sm mt-1">
+            <label class="text-sm font-medium text-gray-600">Email <span class="text-red-500">*</span></label>
+            <input type="email" name="email" value="{{ old('email', auth()->user()?->email) }}" required {{ auth()->check() ? 'readonly' : '' }}
+                class="w-full border {{ auth()->check() ? 'border-gray-200 bg-gray-50 text-gray-500' : 'border-gray-300' }} rounded-lg p-2.5 text-sm mt-1 focus:ring-2 focus:ring-blue-400 focus:outline-none">
         </div>
 
         <div>

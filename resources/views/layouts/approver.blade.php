@@ -38,10 +38,9 @@
             <!-- LEFT: IIT Indore Identity — logo is the home link -->
             <div class="flex items-center gap-3 shrink-0">
                 <a href="{{ route('approver.dashboard') }}">
-                    <img src="http://beta.iiti.ac.in/images/logo.png"
+                    <img src="{{ asset('logo.png') }}"
                          alt="IIT Indore Emblem"
-                         class="h-12 w-auto"
-                         onerror="this.src='https://www.iiti.ac.in/public/themes/iitindore/demos/update-logo.png'">
+                         class="h-12 w-auto">
                 </a>
                 <div class="w-px h-10 bg-[#BF7771] mx-1"></div>
                 <div class="leading-tight">

@@ -112,10 +112,9 @@
     <!-- Navbar -->
     <nav class="relative z-10 flex items-center justify-between px-6 py-4">
         <a href="/" class="flex items-center gap-3">
-            <img src="http://beta.iiti.ac.in/images/logo.png"
+            <img src="{{ asset('logo.png') }}"
                  alt="IIT Indore Logo"
-                 class="h-10 w-auto"
-                 onerror="this.src='https://www.iiti.ac.in/public/themes/iitindore/demos/update-logo.png'">
+                 class="h-10 w-auto">
             <div class="leading-tight">
                 <p class="text-white font-bold text-sm tracking-wide">IIT INDORE</p>
                 <p class="text-white/50 text-xs">Computer &amp; IT Centre</p>

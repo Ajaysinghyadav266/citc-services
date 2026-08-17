@@ -34,10 +34,9 @@
             <!-- LEFT: IIT Indore Identity -->
             <div class="flex items-center gap-3 shrink-0">
                 <a href="{{ session('approver_level') ? route('approver.dashboard') : '/dashboard' }}">
-                    <img src="http://beta.iiti.ac.in/images/logo.png"
+                    <img src="{{ asset('logo.png') }}"
                          alt="IIT Indore Emblem"
-                         class="h-12 w-auto"
-                         onerror="this.src='https://www.iiti.ac.in/public/themes/iitindore/demos/update-logo.png'">
+                         class="h-12 w-auto">
                 </a>
                 <div class="w-px h-10 bg-[#BF7771] mx-1"></div>
                 <div class="leading-tight">
@@ -78,8 +77,9 @@
                 </div>
             </div>
 
-            <!-- RIGHT: User profile + logout -->
+            <!-- RIGHT: User profile + logout or Login button -->
             <div class="flex items-center gap-3 shrink-0">
+                @auth
                 <div class="flex items-center gap-2">
                     <div class="w-8 h-8 rounded-full bg-blue-900 flex items-center justify-center text-white text-xs font-bold shrink-0">
                         {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
@@ -95,6 +95,12 @@
                         Logout
                     </button>
                 </form>
+                @else
+                <a href="{{ route('login') }}"
+                   class="text-[12.5px] font-semibold text-white bg-blue-600 hover:bg-blue-700 px-5 py-2 rounded-full transition-all shadow-sm">
+                    Login →
+                </a>
+                @endauth
             </div>
 
         </div>

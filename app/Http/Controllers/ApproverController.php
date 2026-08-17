@@ -63,7 +63,7 @@ class ApproverController extends Controller
         if ($level === 0) {
             Auth::logout();
             return redirect('/approver-login')
-                ->with('error', 'Your account was not found in the ERP directory. Access denied login as student.');
+                ->with('error', 'Access denied login Please Contact Admin.');
         }
 
         session([

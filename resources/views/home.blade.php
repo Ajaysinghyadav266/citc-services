@@ -118,7 +118,7 @@
     <nav class="relative z-10 flex items-center justify-between px-8 py-4">
         <!-- Logo -->
         <div class="flex items-center gap-3">
-            <img src="https://www.iiti.ac.in/public/themes/iitindore/demos/update-logo.png"
+            <img src="{{ asset('logo.png') }}"
                  alt="IIT Indore Logo" class="h-12 w-auto">
             <div class="leading-tight">
                 <p class="text-slate-800 font-bold text-sm tracking-wide">IIT INDORE</p>
