@@ -70,12 +70,12 @@
             </div>
         </div>
 
-        <a href="{{ session('approver_level') ? route('approver.dashboard') : '/dashboard' }}"
+        <a href="{{ Auth::check() ? (session('approver_level') ? route('approver.dashboard') : '/dashboard') : '/' }}"
            class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-500 text-white font-semibold px-8 py-3 rounded-xl shadow-lg hover:shadow-blue-500/30 transition-all duration-200">
             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7m-9 5v6"/>
             </svg>
-            Back to Dashboard
+            {{ Auth::check() ? 'Back to Dashboard' : 'Back to Home' }}
         </a>
     </div>
 

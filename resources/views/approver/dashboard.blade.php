@@ -134,6 +134,7 @@
 
     </div>
 
+    @if($lvl !== 2)
     {{-- Divider + Service Cards (same as user dashboard) --}}
     <div class="mb-6">
         <p class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">Submit a New Request</p>
@@ -205,6 +206,7 @@
 
         </div>
     </div>
+    @endif
 
     {{-- Recent Activity --}}
     @if(count($recent) > 0)

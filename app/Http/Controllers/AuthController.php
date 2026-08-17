@@ -37,8 +37,7 @@ class AuthController extends Controller
             $googleUser = $provider->stateless()->user();
             $email = strtolower(trim($googleUser->email));
 
-            //  ONLY IITI EMAIL ALLOWED
-            if (!str_ends_with($email, '@iiti.ac.in')) {
+                        if (!str_ends_with($email, '@iiti.ac.in')) {
                 return redirect('/login')->with('error', 'Only IITI emails allowed!');
             }
 
