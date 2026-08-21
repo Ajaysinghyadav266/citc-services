@@ -19,6 +19,11 @@ return new class extends Migration
             $table->string('mobile_number', 10);
             $table->enum('employee_category', ['faculty', 'staff', 'research_scholar', 'student', 'other']);
 
+             $table->string('approver_email')->nullable();
+            $table->string('approver_name')->nullable();
+            $table->string('approver_designation')->nullable();
+            $table->string('approver_department')->nullable();
+
             // VM details
             $table->string('operating_system');
             $table->date('vm_expiry_date');

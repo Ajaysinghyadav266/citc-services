@@ -21,6 +21,11 @@ return new class extends Migration
             $table->string('mobile_number');
             $table->string('employee_category');
 
+             $table->string('approver_email')->nullable();
+            $table->string('approver_name')->nullable();
+            $table->string('approver_designation')->nullable();
+            $table->string('approver_department')->nullable();
+
             // Hosting Details
             $table->string('website_name');
             $table->string('suggested_domain_name');
