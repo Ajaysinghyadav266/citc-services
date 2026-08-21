@@ -16,15 +16,13 @@ class AuthController extends Controller
     //  lands on the approver dashboard after visiting /approver-login first.
     public function redirectToGoogle()
     {
-        session()->forget('approver_login_intent');
-        return Socialite::driver('google')->redirect();
+        return Socialite::driver('google')->stateless()->with(['state' => 'student'])->redirect();
     }
 
     //  GOOGLE REDIRECT — approver login path (called from /approver-login/google)
     public function redirectToGoogleAsApprover()
     {
-        session(['approver_login_intent' => true]);
-        return Socialite::driver('google')->redirect();
+        return Socialite::driver('google')->stateless()->with(['state' => 'approver'])->redirect();
     }
 
     //  GOOGLE CALLBACK
@@ -63,8 +61,7 @@ class AuthController extends Controller
             Auth::login($user);
 
             // ── APPROVER LOGIN INTENT ─────────────────────────────
-            if (session('approver_login_intent')) {
-                session(['approver_login_intent' => null]);
+            if (request()->input('state') === 'approver') {
                 // Delegate to ApproverController for level detection & redirect
                 return app(\App\Http\Controllers\ApproverController::class)->handleCallback();
             }

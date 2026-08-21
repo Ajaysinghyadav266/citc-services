@@ -70,7 +70,6 @@ class ApproverController extends Controller
             'approver_level'      => $level,
             'approver_email'      => $email,
             'approver_name'       => $user->name,
-            'approver_login_intent' => null,
         ]);
 
         return redirect('/approver/dashboard');
