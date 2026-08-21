@@ -205,18 +205,23 @@ body.vmreq-body {
 
 .vmreq-titlebar {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: space-between;
-    padding: 16px 20px;
-    border-bottom: 1px solid var(--line);
+    justify-content: center;
+    text-align: center;
+    padding: 25px 20px;
+    min-height: 100px;
 }
 .vmreq-titlebar h1 {
-    font-size: 18px;
+    font-size: 25px;
     margin: 0;
     font-weight: 600;
-    display: flex;
-    align-items: center;
-    gap: 10px;
+    color: #1d4ed8;
+}
+.vmreq-titlebar p {
+    margin: 5px 0 0;
+    font-size: 14px;
+    color: #9ca3af;
 }
 .vmreq-status {
     font-size: 12px;
@@ -522,9 +527,8 @@ textarea:focus-visible {
     <div class="vmreq-card">
 
         <div class="vmreq-titlebar">
-            <h1>New VM Request Application
-                <span class="vmreq-status" id="vmreqStatus">• Not Saved</span>
-            </h1>
+            <h1>New VM Request Application</h1>
+            <p>Indian Institute of Technology Indore — CITC</p>
         </div>
 
         <form id="vmRequestForm"
@@ -748,7 +752,7 @@ document.addEventListener("DOMContentLoaded", function () {
     showToast("{{ session('success') }}", "success");
     setTimeout(function () {
         window.location.href = "{{ route('dashboard') }}";
-    }, 2500);
+    }, 1000);
 });
 </script>
 @endif
@@ -784,7 +788,7 @@ document.getElementById('vmRequestForm').addEventListener('submit', function (e)
 
     if (!name || !designation || !department) {
         e.preventDefault();
-        alert('Please enter a valid approver email and wait for their details to auto-fill before submitting.');
+        // alert('Please enter a valid approver email and wait for their details to auto-fill before submitting.');
     }
 });
 </script>
@@ -855,8 +859,8 @@ document.getElementById('vmRequestForm').addEventListener('submit', function (e)
       },
       purpose_usage: {
         required: true,
-        test: function (v) { return v.trim().length >= 10; },
-        message: "Describe the purpose in at least 10 characters."
+        test: function (v) { return v.trim().length >= 5; },
+        message: "Describe the purpose in at least 5 characters."
       },
       cpu_cores: {
         required: true,
@@ -870,8 +874,8 @@ document.getElementById('vmRequestForm').addEventListener('submit', function (e)
       },
       justification: {
         required: true,
-        test: function (v) { return v.trim().length >= 10; },
-        message: "Provide a justification of at least 10 characters."
+        test: function (v) { return v.trim().length >= 5; },
+        message: "Provide a justification of at least 5 characters."
       },
       hard_disk_gb: {
         required: true,

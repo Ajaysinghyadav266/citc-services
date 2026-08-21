@@ -27,6 +27,15 @@ class WebHostingRequestController extends Controller
             'owner_name' => 'required',
             'mobile_number' => 'required|digits:10',
             'employee_category' => 'required',
+             // Approver Details
+            'approver_email' => [
+                'required',
+                'email',
+                'regex:/^[a-zA-Z0-9._%+-]+@iiti\.ac\.in$/'
+                ],
+            'approver_name' => 'required|string|max:150',
+            'approver_designation' => 'required|string|max:150',
+            'approver_department' => 'required|string|max:150',
             'website_name' => 'required',
             'suggested_domain_name' => 'required',
             'operating_system' => 'required',
