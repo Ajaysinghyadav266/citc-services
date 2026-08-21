@@ -10,9 +10,16 @@
     <p class="text-center text-gray-400 text-sm mb-6">Indian Institute of Technology Indore — CITC</p>
 
     @if(session('success'))
-        <div class="mb-5 bg-green-50 border border-green-300 text-green-700 rounded-lg px-4 py-3 text-sm">
-            {{ session('success') }}
-        </div>
+    <div id="success-message"
+         class="mb-5 bg-green-50 border border-green-300 text-green-700 rounded-lg px-4 py-3 text-sm">
+        {{ session('success') }}
+    </div>
+
+    <script>
+        setTimeout(function () {
+            window.location.href = "{{ route('dashboard') }}";
+        }, 1000);
+    </script>
     @endif
 
     @if($errors->any())
@@ -244,7 +251,7 @@ document.getElementById('hostingForm').addEventListener('submit', function (e) {
 
     if (!name || !designation || !department) {
         e.preventDefault();
-        alert('Please enter a valid approver email and wait for their details to auto-fill before submitting.');
+        // alert('Please enter a valid approver email and wait for their details to auto-fill before submitting.');
     }
 });
 </script>
