@@ -10,6 +10,7 @@ use App\Models\InternetAccessRequest;
 use App\Models\VmRequest;
 use App\Models\WebHostingRequest;
 use Carbon\Carbon;
+use App\Services\NotificationMailer;
 
 class ApproverController extends Controller
 {
@@ -292,6 +293,69 @@ class ApproverController extends Controller
         return view('approver.citc-completed', compact('requests'));
     }
 
+    // ─── CITC: ALL REQUESTS (Level 3 admin overview) ─────────────
+    public function allRequestsAdmin(Request $request)
+    {
+        $this->gateCheck();
+        if (session('approver_level') !== 3) abort(403);
+
+        $models = [
+            'VPN'             => VpnRequest::class,
+            'Internet Access' => InternetAccessRequest::class,
+            'VM Request'      => VmRequest::class,
+            'Web Hosting'     => WebHostingRequest::class,
+        ];
+
+        $typeRouteMap = [
+            'VPN'             => 'vpn',
+            'Internet Access' => 'internet',
+            'VM Request'      => 'vm',
+            'Web Hosting'     => 'hosting',
+        ];
+
+        $statusFilter = $request->query('status');
+        $typeFilter   = $request->query('type');
+
+        $all = [];
+        foreach ($models as $label => $model) {
+            if ($typeFilter && $typeFilter !== $label) continue;
+
+            $query = $model::query();
+            if ($statusFilter) {
+                $query->where('approval_status', $statusFilter);
+            }
+
+            foreach ($query->latest()->get() as $item) {
+                $item->_type     = $label;
+                $item->_model    = class_basename($model);
+                $item->_typeKey  = $typeRouteMap[$label];
+                $all[] = $item;
+            }
+        }
+
+        usort($all, fn($a, $b) => $b->created_at <=> $a->created_at);
+
+        return view('approver.all-requests', [
+            'requests'     => $all,
+            'statusFilter' => $statusFilter,
+            'typeFilter'   => $typeFilter,
+        ]);
+    }
+
+    // ─── DELETE REQUEST (Level 3 only) ───────────────────────────
+    public function deleteRequest(Request $request, string $type, int $id)
+    {
+        $this->gateCheck();
+        if (session('approver_level') !== 3) abort(403);
+
+        $model = $this->resolveModel($type);
+        if (!$model) return back()->with('error', 'Unknown request type.');
+
+        $model::findOrFail($id)->delete();
+
+        return back()->with('success', 'Request deleted successfully.');
+    }
+
     // ─── APPROVE ACTION ───────────────────────────────────────────
     public function approve(Request $request, string $type, int $id)
     {
@@ -305,6 +369,11 @@ class ApproverController extends Controller
 
         $rec = $model::findOrFail($id);
 
+        // Helper to derive requester info regardless of model
+        $requesterName  = $rec->name  ?? $rec->owner_name  ?? 'Requester';
+        $requesterEmail = $rec->email ?? $rec->institute_email ?? null;
+        $serviceType    = $this->resolveServiceLabel($type);
+
         if ($level === 1 && $rec->approval_status === 'pending') {
             $rec->update([
                 'approval_status'  => 'approved_by_1',
@@ -312,6 +381,14 @@ class ApproverController extends Controller
                 'approver1_name'   => $name,
                 'approved_by_1_at' => Carbon::now(),
             ]);
+            // Notify Dean IT (L2) that a new request awaits their review
+            NotificationMailer::sendApprovedByL1(
+                $requesterName,
+                $requesterEmail ?? '',
+                $serviceType,
+                $name,
+                $email
+            );
         } elseif ($level === 2 && $rec->approval_status === 'approved_by_1') {
             $rec->update([
                 'approval_status'  => 'approved_by_2',
@@ -319,12 +396,21 @@ class ApproverController extends Controller
                 'approver2_name'   => $name,
                 'approved_by_2_at' => Carbon::now(),
             ]);
+            // No mail here — CITC team will see it in their dashboard
         } elseif ($level === 3 && $rec->approval_status === 'approved_by_2') {
             $rec->update([
                 'approval_status'   => 'completed',
                 'citc_completed_by' => $name,
                 'citc_completed_at' => Carbon::now(),
             ]);
+            // Notify requester that their request is fully fulfilled
+            if ($requesterEmail) {
+                NotificationMailer::sendCompleted(
+                    $requesterName,
+                    $requesterEmail,
+                    $serviceType
+                );
+            }
         } else {
             return back()->with('error', 'This request cannot be approved at your level right now.');
         }
@@ -347,6 +433,10 @@ class ApproverController extends Controller
 
         $rec = $model::findOrFail($id);
 
+        $requesterName  = $rec->name  ?? $rec->owner_name  ?? 'Requester';
+        $requesterEmail = $rec->email ?? $rec->institute_email ?? null;
+        $serviceType    = $this->resolveServiceLabel($type);
+
         $rec->update([
             'approval_status'  => 'rejected',
             'rejected_by'      => $email,
@@ -354,6 +444,17 @@ class ApproverController extends Controller
             'rejection_reason' => $request->reason,
             'rejected_at'      => Carbon::now(),
         ]);
+
+        // Notify requester that their request was rejected
+        if ($requesterEmail) {
+            NotificationMailer::sendRejected(
+                $requesterName,
+                $requesterEmail,
+                $serviceType,
+                $request->reason,
+                $level
+            );
+        }
 
         return back()->with('success', 'Request rejected.');
     }
@@ -367,6 +468,18 @@ class ApproverController extends Controller
             'vm'       => VmRequest::class,
             'hosting'  => WebHostingRequest::class,
             default    => null,
+        };
+    }
+
+    // ─── HELPER: RESOLVE SERVICE LABEL ───────────────────────────
+    private function resolveServiceLabel(string $type): string
+    {
+        return match ($type) {
+            'vpn'      => 'VPN',
+            'internet' => 'Internet Access',
+            'vm'       => 'VM Machine',
+            'hosting'  => 'Web Hosting',
+            default    => ucfirst($type),
         };
     }
 }

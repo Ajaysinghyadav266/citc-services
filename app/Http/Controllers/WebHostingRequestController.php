@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\WebHostingRequest;
+use App\Services\NotificationMailer;
 
 class WebHostingRequestController extends Controller
 {
@@ -32,6 +33,10 @@ class WebHostingRequestController extends Controller
             'operating_system' => 'required',
             'purpose' => 'required',
             'comment' => 'nullable',
+            'approver_email'      => 'required|email',
+            'approver_name'       => 'required|string',
+            'approver_designation'=> 'required|string',
+            'approver_department' => 'required|string',
         ],
         [
             'institute_email.required' => 'Institute Email ID is required.',
@@ -52,6 +57,15 @@ class WebHostingRequestController extends Controller
     );
 
     WebHostingRequest::create($validated);
+
+    // MAIL — submitted confirmation + approver CC
+    NotificationMailer::sendSubmitted(
+        $validated['owner_name'],
+        $validated['institute_email'],
+        'Web Hosting',
+        $validated['approver_email'],
+        $validated['approver_name']
+    );
 
     return redirect()->back()->with('success', 'Request Submitted Successfully!');
     }

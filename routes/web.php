@@ -84,9 +84,11 @@ Route::middleware('auth')->prefix('approver')->name('approver.')->group(function
     // CITC-only routes (level 3)
     Route::get('/citc/pending',   [ApproverController::class, 'citcPending'])->name('citc.pending');
     Route::get('/citc/completed', [ApproverController::class, 'citcCompleted'])->name('citc.completed');
+    Route::get('/all-requests',   [ApproverController::class, 'allRequestsAdmin'])->name('all-requests');
 
     // Actions
     Route::post('/approve/{type}/{id}', [ApproverController::class, 'approve'])->name('approve');
     Route::post('/reject/{type}/{id}',  [ApproverController::class, 'reject'])->name('reject');
+    Route::delete('/delete/{type}/{id}',[ApproverController::class, 'deleteRequest'])->name('delete');
 });
 

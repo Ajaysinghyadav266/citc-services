@@ -19,6 +19,10 @@ class WebHostingRequest extends Model
         'operating_system',
         'purpose',
         'comment',
+        'approver_email',
+        'approver_name',
+        'approver_designation',
+        'approver_department',
         // Approval workflow
         'approval_status',
         'approver1_email',

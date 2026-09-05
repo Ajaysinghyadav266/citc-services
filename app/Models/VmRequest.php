@@ -28,6 +28,10 @@ class VmRequest extends Model
         'sub_domain',
         'software_list',
         'ssl_configuration',
+        'approver_email',
+        'approver_name',
+        'approver_designation',
+        'approver_department',
         // Approval workflow
         'approval_status',
         'approver1_email',

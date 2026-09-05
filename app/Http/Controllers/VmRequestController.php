@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 use Exception;
+use App\Services\NotificationMailer;
 
 class VmRequestController extends Controller
 {
@@ -49,10 +50,24 @@ class VmRequestController extends Controller
             'software_list'     => ['required', 'string', 'min:3'],
             'ssl_configuration' => ['required', 'in:yes,no'],
             'i_confirm'         => ['accepted'],
+            'approver_email'      => ['required', 'email'],
+            'approver_name'       => ['required', 'string'],
+            'approver_designation'=> ['required', 'string'],
+            'approver_department' => ['required', 'string'],
         ]);
 
         try {
             VmRequest::create($validated);
+
+            // MAIL — submitted confirmation + approver CC
+            NotificationMailer::sendSubmitted(
+                $validated['owner_name'],
+                $validated['institute_email'],
+                'VM Machine',
+                $validated['approver_email'],
+                $validated['approver_name']
+            );
+
             return redirect()
                 ->route('vm-requests')
                 ->with('success', 'VM request submitted successfully.');

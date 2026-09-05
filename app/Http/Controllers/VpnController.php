@@ -6,8 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\VpnRequest;
 use App\Models\Approver;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Http;
+use App\Services\NotificationMailer;
 
 class VpnController extends Controller
 {
@@ -45,11 +45,14 @@ class VpnController extends Controller
             'approver_department' => $req->approver_department,
         ]);
 
-        //  MAIL
-        Mail::raw("Your VPN request has been submitted successfully.", function ($msg) {
-            $msg->to(auth()->user()->email)
-                ->subject("VPN Request Submitted");
-        });
+        // MAIL — submitted confirmation + approver CC
+        NotificationMailer::sendSubmitted(
+            auth()->user()->name,
+            auth()->user()->email,
+            'VPN',
+            $req->approver_email,
+            $req->approver_name
+        );
 
         return redirect('/vpn-success');
     }

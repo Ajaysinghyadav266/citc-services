@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\InternetAccessRequest;
-use Illuminate\Support\Facades\Mail;
+use App\Services\NotificationMailer;
 
 class InternetAccessController extends Controller
 {
@@ -71,13 +71,13 @@ class InternetAccessController extends Controller
             'status'               => 'pending',
         ]);
 
-        // MAIL — notify applicant
-        Mail::raw(
-            "Dear " . $request->name . ",\n\nYour Internet Access request has been submitted successfully and is pending approval.\n\nRegards,\nIIT Indore CITC",
-            function ($msg) use ($request) {
-                $msg->to($request->email)
-                    ->subject('Internet Access Request Submitted — IIT Indore');
-            }
+        // MAIL — submitted confirmation + approver CC
+        NotificationMailer::sendSubmitted(
+            $request->name,
+            $request->email,
+            'Internet Access',
+            $request->approver_email,
+            $request->approver_name
         );
 
         return redirect()->route('internet-access.success');

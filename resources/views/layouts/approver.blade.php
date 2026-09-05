@@ -64,10 +64,14 @@
                     </a>
 
                     @if(session('approver_level') === 3)
-                        {{-- Level 3: CITC —— only Pending + Completed --}}
+                        {{-- Level 3: CITC —— Pending + Completed + All Requests --}}
                         <a href="/approver/citc/completed"
                            class="nav-link text-[12.5px] font-semibold text-gray-700 px-4 py-1.5 rounded-full {{ request()->is('approver/citc/completed') ? 'active' : '' }}">
                             Completed
+                        </a>
+                        <a href="/approver/all-requests"
+                           class="nav-link text-[12.5px] font-semibold text-gray-700 px-4 py-1.5 rounded-full {{ request()->is('approver/all-requests') ? 'active' : '' }}">
+                            All Requests
                         </a>
                     @else
                         {{-- Level 1 & 2: Approved + Rejected --}}
