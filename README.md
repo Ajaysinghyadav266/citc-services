@@ -784,8 +784,8 @@ The email must match a verified email address on your GitHub profile for commits
 |---|---|
 | **Aryavrat Mishra** | Google Auth, Approval workflow, Email pipeline (`NotificationMailer`), Async mail dispatch, Reminder scheduler (`SendPendingReminders`), All-Requests L3 admin view, VM/Web Hosting approval routing fix |
 | **Ajaysinghyadav266** | Project initialisation, VPN module, ERP API integration |
-| **Aakash Singh** | Test branch contributions, PR reviews |
-| **Rohit Pawar** | Web Hosting module |
+| **Aakash Singh** | VM-Request Module, Test and Dev branch contributions, PR reviews |
+| **Rohit Pawar** | Web Hosting module, Testing assistance |
 
 ---
 
