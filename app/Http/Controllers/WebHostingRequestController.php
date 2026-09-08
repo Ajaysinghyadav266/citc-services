@@ -42,10 +42,6 @@ class WebHostingRequestController extends Controller
             'operating_system' => 'required',
             'purpose' => 'required',
             'comment' => 'nullable',
-            'approver_email'      => 'required|email',
-            'approver_name'       => 'required|string',
-            'approver_designation'=> 'required|string',
-            'approver_department' => 'required|string',
         ],
         [
             'institute_email.required' => 'Institute Email ID is required.',
@@ -76,6 +72,12 @@ class WebHostingRequestController extends Controller
         $validated['approver_name']
     );
 
-    return redirect()->back()->with('success', 'Request Submitted Successfully!');
+    return redirect()->route('hosting.success');
+    }
+
+    // SUCCESS PAGE
+    public function success()
+    {
+        return view('hosting.success');
     }
 }

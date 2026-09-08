@@ -47,6 +47,7 @@ Route::get('/vm-request-application/new', [VmRequestController::class, 'create']
 //vm-request-database
 Route::post('/vm-request-application', [VmRequestController::class, 'store'])->middleware('auth')
     ->name('vm-requests.store');
+Route::get('/vm-request/success', [VmRequestController::class, 'success'])->name('vm-request.success');
 
 // Logout
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
@@ -60,6 +61,8 @@ Route::get('/vpn-success', function () {
 Route::get('/web-host', [WebHostingRequestController::class, 'create'])->middleware('auth');;
 
 Route::post('/submit', [WebHostingRequestController::class, 'store'])->name('hosting.store');
+Route::get('/web-host/success', [InternetAccessController::class, 'success'])->name('hosting.success');
+
 
 // Internet Access Request form
 Route::get('/internet-access', [InternetAccessController::class, 'create'])->name('internet-access.create');
