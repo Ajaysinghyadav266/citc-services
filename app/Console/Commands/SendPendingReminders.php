@@ -29,7 +29,7 @@ class SendPendingReminders extends Command
     {
         $hours     = (int) $this->option('hours');
         $threshold = Carbon::now()->subHours($hours);
-        $deanEmail = env('CITC_HEAD_EMAIL', 'ftest@iiti.ac.in');
+       $deanEmail = env('DOITA_EMAIL', '');
 
         $totalL1 = 0;
         $totalL2 = 0;
@@ -95,7 +95,7 @@ class SendPendingReminders extends Command
         string $requesterEmail,
         int    $hoursStale
     ): void {
-        $subject = "[IIT Indore] ⏰ Reminder: {$serviceType} Request Awaiting Your Approval";
+        $subject = "Reminder: {$serviceType} Request Awaiting Your Approval";
         $body    = $this->wrap("
             <p>Dear <strong>{$approverName}</strong>,</p>
 
@@ -142,7 +142,7 @@ class SendPendingReminders extends Command
         string $approver1Name,
         int    $hoursStale
     ): void {
-        $subject = "[IIT Indore] ⏰ Reminder: {$serviceType} Request Awaiting Your Approval (L2)";
+        $subject = " Reminder: {$serviceType} Request Awaiting Your Approval (L2)";
         $body    = $this->wrap("
             <p>Dear Dean IT,</p>
 
