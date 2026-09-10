@@ -54,10 +54,6 @@ class VmRequestController extends Controller
             'software_list'     => ['required', 'string', 'min:3'],
             'ssl_configuration' => ['required', 'in:yes,no'],
             'i_confirm'         => ['accepted'],
-            'approver_email'      => ['required', 'email'],
-            'approver_name'       => ['required', 'string'],
-            'approver_designation'=> ['required', 'string'],
-            'approver_department' => ['required', 'string'],
         ]);
 
         try {
@@ -73,8 +69,7 @@ class VmRequestController extends Controller
             );
 
             return redirect()
-                ->route('vm-requests')
-                ->with('success', 'VM request submitted successfully.');
+            ->route('vm-request.success');
         } catch (Exception $e) {
 
             return redirect()
@@ -82,5 +77,9 @@ class VmRequestController extends Controller
                 ->withInput()
                 ->with('error', 'Unable to submit VM request. Please try again.');
         }
+    }
+    public function success()
+    {
+        return view('vm-success');
     }
 }

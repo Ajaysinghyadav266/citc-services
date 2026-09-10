@@ -809,7 +809,7 @@ document.getElementById('vmRequestForm').addEventListener('submit', function (e)
     var form = document.getElementById("vmRequestForm");
     if (!form) return;
 
-    var statusPill  = document.getElementById("vmreqStatus");
+    var statusPill = document.getElementById("vmreqStatus");
     var confirmWrap = document.getElementById("confirmWrap");
     var confirmBox  = document.getElementById("i_confirm");
     var saveBtn     = document.getElementById("saveBtn");
@@ -916,35 +916,64 @@ document.getElementById('vmRequestForm').addEventListener('submit', function (e)
     });
 
     form.addEventListener("submit", function (e) {
-      setUnsaved();
 
-      var allValid = true;
-      Object.keys(rules).forEach(function (name) {
-        if (!validateField(name)) allValid = false;
-      });
+    // Don't let missing status element break validation
+    if (statusPill) {
+        setUnsaved();
+    }
 
-      if (!confirmBox.checked) {
+    var allValid = true;
+
+    // Validate every field
+    Object.keys(rules).forEach(function (name) {
+        if (!validateField(name)) {
+            allValid = false;
+        }
+    });
+
+    // Validate confirmation checkbox
+    if (!confirmBox.checked) {
         confirmWrap.classList.add("is-invalid");
         allValid = false;
-      }
+    }
 
-      if (!allValid) {
+    // INVALID
+    if (!allValid) {
         e.preventDefault();
-        showToast("Please fix the highlighted fields.", "error");
-        var firstError = form.querySelector(".field.is-invalid, .vmreq-confirm.is-invalid");
-        if (firstError) firstError.scrollIntoView({ behavior: "smooth", block: "center" });
+
+        showToast(
+            "Please fix the highlighted fields.",
+            "error"
+        );
+
+        var firstError = form.querySelector(
+            ".field.is-invalid, .vmreq-confirm.is-invalid"
+        );
+
+        if (firstError) {
+            firstError.scrollIntoView({
+                behavior: "smooth",
+                block: "center"
+            });
+        }
+
         return;
-      }
+    }
 
-      // Valid: let the browser POST natively to VmRequestController@store
-      // (Laravel handles CSRF + authoritative server-side validation there).
-      document.querySelectorAll('button[type="submit"]').forEach(function(btn){
-      btn.disabled = true;
-      btn.innerHTML = "Saving...";
+    // VALID
+    document.querySelectorAll('button[type="submit"]').forEach(function(btn) {
+        btn.disabled = true;
+        btn.innerHTML = "Saving...";
     });
 
-showToast("⏳ Saving your VM Request...", "loading");
-    });
+    showToast(
+        "⏳ Saving your VM Request...",
+        "loading"
+    );
+
+    // Don't call preventDefault()
+    // Laravel will receive the POST request.
+});
 
     function validateField(name) {
       var rule  = rules[name];
@@ -977,8 +1006,10 @@ showToast("⏳ Saving your VM Request...", "loading");
     }
 
     function setUnsaved() {
-      statusPill.textContent = "• Not Saved";
-      statusPill.classList.remove("is-saved");
+    if (!statusPill) return;
+
+    statusPill.textContent = "• Not Saved";
+    statusPill.classList.remove("is-saved");
     }
   }
    window.showToast = function(message, type) {
