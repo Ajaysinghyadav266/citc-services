@@ -28,7 +28,7 @@ class WebHostingRequestController extends Controller
             'owner_name' => 'required',
             'mobile_number' => 'required|digits:10',
             'employee_category' => 'required',
-             // Approver Details
+             // Recommender Details
             'approver_email' => [
                 'required',
                 'email',

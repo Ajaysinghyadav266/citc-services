@@ -404,7 +404,7 @@ class ApproverController extends Controller
                 $requesterName,
                 $requesterEmail ?? '',
                 $serviceType,
-                $rec->approver1_name ?? $rec->approver_name ?? 'L1 Approver',
+                $rec->approver1_name ?? $rec->approver_name ?? 'Recommender',
                 $name
             );
         } elseif ($level === 3 && $rec->approval_status === 'approved_by_2') {

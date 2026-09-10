@@ -113,24 +113,24 @@
 
         </div>
 
-        {{-- ── SECTION 2: Approver Details ── --}}
-        <h2 class="text-base font-semibold text-gray-700 mt-7 mb-3">Approver Details</h2>
+        {{-- ── SECTION 2: Recommender Details ── --}}
+        <h2 class="text-base font-semibold text-gray-700 mt-7 mb-3">Recommender Details</h2>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 
             <div>
-                <label class="text-sm font-medium text-gray-600">Approver Email <span class="text-red-500">*</span></label>
+                <label class="text-sm font-medium text-gray-600">Recommender Email <span class="text-red-500">*</span></label>
                 <input type="email"
                        id="approver_email"
                        name="approver_email"
                        value="{{ old('approver_email') }}"
-                       placeholder="approver@iiti.ac.in"
+                       placeholder="recommender@iiti.ac.in"
                        class="w-full border border-gray-300 rounded-lg p-2.5 text-sm mt-1 focus:ring-2 focus:ring-blue-400 focus:outline-none">
                 <small class="text-gray-400 text-xs mt-1 block">Tab out after typing email to auto-fill details</small>
             </div>
 
             <div>
-                <label class="text-sm font-medium text-gray-600">Approver Name</label>
+                <label class="text-sm font-medium text-gray-600">Recommender Name</label>
                 <input type="text"
                        id="approver_name"
                        name="approver_name"
@@ -334,7 +334,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
     /* =========================================================
-       APPROVER EMAIL → AUTO FETCH ERP DETAILS
+       RECOMMENDER EMAIL → AUTO FETCH ERP DETAILS
     ========================================================= */
 
     approverEmail.addEventListener('blur', async function () {
@@ -343,7 +343,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         removeFieldError('approver_email');
 
-        // Clear previous approver details
+        // Clear previous recommender details
         approverName.value = '';
         approverDesignation.value = '';
         approverDepartment.value = '';
@@ -367,7 +367,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         // Loading state
-        toast('Fetching approver details...', 'loading');
+        toast('Fetching recommender details...', 'loading');
 
         try {
 
@@ -376,7 +376,7 @@ document.addEventListener('DOMContentLoaded', function () {
             );
 
             if (!response.ok) {
-                throw new Error('Failed to fetch approver details');
+                throw new Error('Failed to fetch recommender details');
             }
 
             const data = await response.json();
@@ -393,7 +393,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 showFieldError(
                     'approver_email',
-                    'Approver details could not be found. Please enter a valid approver email.'
+                    'Recommender details could not be found. Please enter a valid recommender email.'
                 );
 
                 return;
@@ -407,11 +407,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
         } catch (error) {
 
-            console.error('Approver lookup failed:', error);
+            console.error('Recommender lookup failed:', error);
 
             showFieldError(
                 'approver_email',
-                'Unable to fetch approver details. Please try again.'
+                'Unable to fetch recommender details. Please try again.'
             );
         }
     });
@@ -513,7 +513,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
 
-        // Approver email
+        // Recommender email
         const approverEmailValue =
             approverEmail.value.trim();
 
@@ -521,7 +521,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             invalid(
                 'approver_email',
-                'Approver Email is required.'
+                'Recommender Email is required.'
             );
 
         } else if (
@@ -535,12 +535,12 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
 
-        // Approver details
+        // Recommender details
         if (!approverName.value.trim()) {
 
             invalid(
                 'approver_name',
-                'Approver Name could not be loaded.'
+                'Recommender Name could not be loaded.'
             );
         }
 
@@ -548,7 +548,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             invalid(
                 'approver_designation',
-                'Approver Designation could not be loaded.'
+                'Recommender Designation could not be loaded.'
             );
         }
 
@@ -556,7 +556,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             invalid(
                 'approver_department',
-                'Approver Department could not be loaded.'
+                'Recommender Department could not be loaded.'
             );
         }
 
