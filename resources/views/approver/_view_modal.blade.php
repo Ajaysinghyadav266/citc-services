@@ -84,9 +84,9 @@ const TYPE_META = {
 };
 
 const STATUS_LABELS = {
-    pending:       'Pending L1',
-    approved_by_1: 'Approved by L1',
-    approved_by_2: 'Approved by L2',
+    pending:       'Pending Recommendation',
+    approved_by_1: 'Recommended (Awaiting Dean)',
+    approved_by_2: 'Dean Approved',
     completed:     'Completed',
     rejected:      'Rejected',
 };
@@ -201,10 +201,10 @@ function buildBody(r) {
         </div>`);
     }
 
-    // ── Section: Designated Approver (filled at form submission) ──────
+    // ── Section: Designated Recommender (filled at form submission) ──────
     if (r.approver_email) {
         sections.push(`<div>
-            <p class="rdm-section-title">🔖 Designated Approver (selected by requester)</p>
+            <p class="rdm-section-title">🔖 Designated Recommender (selected by requester)</p>
             <div class="rdm-grid">
                 ${field('Name', r.approver_name)}
                 ${field('Email', r.approver_email)}
@@ -215,7 +215,7 @@ function buildBody(r) {
     }
 
     // ── Section: Approval Timeline ────────────────────────────────────
-    const stages = ['L1 Approval', 'L2 Approval', 'CITC Complete'];
+    const stages = ['Recommender', 'Dean IT', 'CITC'];
     const doneCount = { pending: 0, approved_by_1: 1, approved_by_2: 2, completed: 3 }[status] ?? (status === 'rejected' ? -1 : 0);
 
     let trackHtml = '';
@@ -238,12 +238,12 @@ function buildBody(r) {
 
     let timelineFields = '';
     if (r.approver1_email) {
-        timelineFields += `${field('L1 Approved By', `${r.approver1_name || ''} (${r.approver1_email})`)}
-                           ${field('L1 Approved At', fmtDate(r.approved_by_1_at))}`;
+        timelineFields += `${field('Recommended By', `${r.approver1_name || ''} (${r.approver1_email})`)}
+                           ${field('Recommended At', fmtDate(r.approved_by_1_at))}`;
     }
     if (r.approver2_email) {
-        timelineFields += `${field('L2 Approved By', `${r.approver2_name || ''} (${r.approver2_email})`)}
-                           ${field('L2 Approved At', fmtDate(r.approved_by_2_at))}`;
+        timelineFields += `${field('Approved By', `${r.approver2_name || ''} (${r.approver2_email})`)}
+                           ${field('Approved At', fmtDate(r.approved_by_2_at))}`;
     }
     if (r.citc_completed_by) {
         timelineFields += `${field('Completed By (CITC)', r.citc_completed_by)}

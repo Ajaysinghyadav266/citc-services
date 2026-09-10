@@ -587,20 +587,20 @@ textarea:focus-visible {
 
             </div>
 
-            <h2 class="vmreq-band">Approver Details</h2>
+            <h2 class="vmreq-band">Recommender Details</h2>
             <div class="vmreq-fields">
 
                 <div class="field">
-                    <label for="approver_email">Approver Email<span class="req">*</span></label>
+                    <label for="approver_email">Recommender Email<span class="req">*</span></label>
                     <input type="email" id="approver_email" name="approver_email"
                            value="{{ old('approver_email') }}"
-                           placeholder="approver@iiti.ac.in" required>
-                    <span class="hint">Tab out after typing to auto-fill approver details.</span>
+                           placeholder="recommender@iiti.ac.in" required>
+                    <span class="hint">Tab out after typing to auto-fill recommender details.</span>
                     <span class="field-error"></span>
                 </div>
 
                 <div class="field">
-                    <label for="approver_name">Approver Name</label>
+                    <label for="approver_name">Recommender Name</label>
                     <input type="text" id="approver_name" name="approver_name"
                            value="{{ old('approver_name') }}"
                            placeholder="Auto-filled from ERP" readonly>
@@ -765,7 +765,7 @@ setTimeout(() => {
 @endif
 
 <script>
-// ── Auto-populate approver details from ERP API ──
+// ── Auto-populate recommender details from ERP API ──
 document.getElementById('approver_email').addEventListener('blur', function () {
     const email = this.value.trim();
     if (!email) return;
@@ -777,7 +777,7 @@ document.getElementById('approver_email').addEventListener('blur', function () {
             document.getElementById('approver_designation').value = data.designation || '';
             document.getElementById('approver_department').value  = data.department  || '';
         })
-        .catch(err => console.error('Approver lookup failed:', err));
+        .catch(err => console.error('Recommender lookup failed:', err));
 });
 
 // ── Validate approver before submit ──
@@ -788,7 +788,7 @@ document.getElementById('vmRequestForm').addEventListener('submit', function (e)
 
     if (!name || !designation || !department) {
         e.preventDefault();
-        // alert('Please enter a valid approver email and wait for their details to auto-fill before submitting.');
+        // alert('Please enter a valid recommender email and wait for their details to auto-fill before submitting.');
     }
 });
 </script>

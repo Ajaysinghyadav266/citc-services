@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Log;
  * Centralised email notification helper for CITC Services.
  *
  * All four request types share the same notification events:
- *   1. On submission  → requester + approver (L1) in CC
+ *   1. On submission  → requester + Recommender (L1) in CC
  *   2. After L1 approves → Dean IT (L2) notified
  *   3. After CITC completes → requester notified of fulfilment
  *   4. On rejection (any level) → requester notified
@@ -42,7 +42,7 @@ class NotificationMailer
             <p>Dear <strong>{$requesterName}</strong>,</p>
 
             <p>Your <strong>{$serviceType}</strong> request has been submitted successfully and is now
-            <span style='color:#d97706;font-weight:600;'>Pending Approval</span> from your approver.</p>
+            <span style='color:#d97706;font-weight:600;'>Pending Recommendation</span> from your designated recommender.</p>
 
             <table style='border-collapse:collapse;width:100%;margin-top:16px;'>
                 <tr>
@@ -55,7 +55,7 @@ class NotificationMailer
                 </tr>
                 <tr>
                     <td style='padding:8px 12px;background:#f3f4f6;font-weight:600;border:1px solid #e5e7eb;'>Next Step</td>
-                    <td style='padding:8px 12px;border:1px solid #e5e7eb;'>Your approver will review and forward the request to the Dean IT.</td>
+                    <td style='padding:8px 12px;border:1px solid #e5e7eb;'>Your recommender will review and forward the request to the Dean IT.</td>
                 </tr>
             </table>
 
@@ -65,7 +65,7 @@ class NotificationMailer
 
         self::sendAsync($requesterEmail, $subjectUser, $bodyUser, 'sendSubmitted (user)');
 
-        // ── Email 2: L1 Approver action required ─────────────────
+        // ── Email 2: Recommender (L1) action required ─────────────────
         $subjectApprover = " Action Required: New {$serviceType} Request";
 
         $bodyApprover = self::wrap("
@@ -85,7 +85,7 @@ class NotificationMailer
                 </tr>
                 <tr>
                     <td style='padding:8px 12px;background:#f3f4f6;font-weight:600;border:1px solid #e5e7eb;'>Your Role</td>
-                    <td style='padding:8px 12px;border:1px solid #e5e7eb;'>Level 1 Approver — please review and approve or reject this request.</td>
+                    <td style='padding:8px 12px;border:1px solid #e5e7eb;'>Recommender — please review and recommend or reject this request.</td>
                 </tr>
             </table>
 
@@ -118,7 +118,7 @@ class NotificationMailer
         $body = self::wrap("
             <p>Dear Dean IT,</p>
 
-            <p>A <strong>{$serviceType}</strong> request has been approved by the Level 1 approver
+            <p>A <strong>{$serviceType}</strong> request has been recommended by the Level 1 Recommender
             and is now awaiting <strong>your review and approval</strong>.</p>
 
             <table style='border-collapse:collapse;width:100%;margin-top:16px;'>
@@ -131,12 +131,12 @@ class NotificationMailer
                     <td style='padding:8px 12px;border:1px solid #e5e7eb;'>{$requesterName} &lt;{$requesterEmail}&gt;</td>
                 </tr>
                 <tr>
-                    <td style='padding:8px 12px;background:#f3f4f6;font-weight:600;border:1px solid #e5e7eb;'>Approved by L1</td>
+                    <td style='padding:8px 12px;background:#f3f4f6;font-weight:600;border:1px solid #e5e7eb;'>Recommended By</td>
                     <td style='padding:8px 12px;border:1px solid #e5e7eb;'>{$approver1Name} &lt;{$approver1Email}&gt;</td>
                 </tr>
                 <tr>
                     <td style='padding:8px 12px;background:#f3f4f6;font-weight:600;border:1px solid #e5e7eb;'>Your Action</td>
-                    <td style='padding:8px 12px;border:1px solid #e5e7eb;'>Please log in to the Approver Dashboard to review and approve/reject this request.</td>
+                    <td style='padding:8px 12px;border:1px solid #e5e7eb;'>Please log in to the Dashboard to review and approve/reject this request.</td>
                 </tr>
             </table>
 
@@ -272,7 +272,7 @@ class NotificationMailer
         $subject = " {$serviceType} Request Rejected";
 
         $levelName = match($rejectedByLevel) {
-            1 => 'Level 1 Approver (Faculty/Staff)',
+            1 => 'Recommender (Faculty/Staff)',
             2 => 'Dean IT Infrastructure (Level 2)',
             3 => 'CITC Team (Level 3)',
             default => "Level {$rejectedByLevel}",
