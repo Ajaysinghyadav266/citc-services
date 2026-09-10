@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Log;
 
 /**
  * Centralised email notification helper for CITC Services.
@@ -15,10 +16,10 @@ use Illuminate\Support\Facades\Mail;
  */
 class NotificationMailer
 {
-    /** L2 Dean IT email — from .env or fallback */
+    /** L2 Dean IT email — set DOITA_EMAIL in .env */
     public static function deanEmail(): string
     {
-        return env('CITC_HEAD_EMAIL', 'ftest@iiti.ac.in');
+        return env('DOITA_EMAIL', '');
     }
 
     // ── 1. SUBMITTED ──────────────────────────────────────────────
@@ -35,7 +36,7 @@ class NotificationMailer
     ): void {
 
         // ── Email 1: Requester confirmation ──────────────────────
-        $subjectUser = "[IIT Indore] {$serviceType} Request Submitted";
+        $subjectUser = " {$serviceType} Request Submitted";
 
         $bodyUser = self::wrap("
             <p>Dear <strong>{$requesterName}</strong>,</p>
@@ -65,7 +66,7 @@ class NotificationMailer
         self::sendAsync($requesterEmail, $subjectUser, $bodyUser, 'sendSubmitted (user)');
 
         // ── Email 2: L1 Approver action required ─────────────────
-        $subjectApprover = "[IIT Indore] Action Required: New {$serviceType} Request";
+        $subjectApprover = " Action Required: New {$serviceType} Request";
 
         $bodyApprover = self::wrap("
             <p>Dear <strong>{$approverName}</strong>,</p>
@@ -112,7 +113,7 @@ class NotificationMailer
         string $approver1Email
     ): void {
         $deanEmail = self::deanEmail();
-        $subject   = "[IIT Indore] Action Required: {$serviceType} Request — L1 Approved";
+        $subject   = " Action Required: {$serviceType} Request — L1 Approved";
 
         $body = self::wrap("
             <p>Dear Dean IT,</p>
@@ -150,7 +151,69 @@ class NotificationMailer
         self::sendAsync($deanEmail, $subject, $body, 'sendApprovedByL1');
     }
 
-    // ── 3. CITC COMPLETED → NOTIFY REQUESTER ─────────────────────
+    // ── 3. L2 APPROVED → NOTIFY CITC TEAM ────────────────────────
+    /**
+     * After Dean IT (L2) approves, notify the CITC team group mailbox
+     * (CITC_TEAM in .env) so they know a request is ready for action.
+     */
+    public static function sendApprovedByL2(
+        string $requesterName,
+        string $requesterEmail,
+        string $serviceType,
+        string $approver1Name,
+        string $approver2Name
+    ): void {
+        $citcTeam = env('CITC_TEAM', '');
+        if (empty($citcTeam)) {
+            Log::warning('sendApprovedByL2: CITC_TEAM is not set in .env — skipping notification.');
+            return;
+        }
+
+        $subject = "Action Required: {$serviceType} Request — Approved by Dean IT, Awaiting CITC Processing";
+
+        $body = self::wrap("
+            <p>Dear CITC Team,</p>
+
+            <p>A <strong>{$serviceType}</strong> request has been fully approved through the academic chain
+            and is now <strong>ready for your processing and fulfilment</strong>.</p>
+
+            <table style='border-collapse:collapse;width:100%;margin-top:16px;'>
+                <tr>
+                    <td style='padding:8px 12px;background:#f3f4f6;font-weight:600;border:1px solid #e5e7eb;width:180px;'>Service</td>
+                    <td style='padding:8px 12px;border:1px solid #e5e7eb;'>{$serviceType}</td>
+                </tr>
+                <tr>
+                    <td style='padding:8px 12px;background:#f3f4f6;font-weight:600;border:1px solid #e5e7eb;'>Requested By</td>
+                    <td style='padding:8px 12px;border:1px solid #e5e7eb;'>{$requesterName} &lt;{$requesterEmail}&gt;</td>
+                </tr>
+                <tr>
+                    <td style='padding:8px 12px;background:#f3f4f6;font-weight:600;border:1px solid #e5e7eb;'>L1 Approved By</td>
+                    <td style='padding:8px 12px;border:1px solid #e5e7eb;'>{$approver1Name}</td>
+                </tr>
+                <tr>
+                    <td style='padding:8px 12px;background:#f3f4f6;font-weight:600;border:1px solid #e5e7eb;'>L2 Approved By</td>
+                    <td style='padding:8px 12px;border:1px solid #e5e7eb;'>{$approver2Name} (Dean IT)</td>
+                </tr>
+                <tr>
+                    <td style='padding:8px 12px;background:#f3f4f6;font-weight:600;border:1px solid #e5e7eb;'>Next Step</td>
+                    <td style='padding:8px 12px;border:1px solid #e5e7eb;color:#b45309;font-weight:600;'>
+                        Please log in to the CITC dashboard, review the request, and mark it complete once fulfilled.
+                    </td>
+                </tr>
+            </table>
+
+            <p style='margin-top:20px;'>
+                <a href='" . config('app.url') . "/approver-login'
+                   style='display:inline-block;background:#d97706;color:#fff;padding:10px 22px;border-radius:8px;text-decoration:none;font-weight:600;'>
+                    Open CITC Dashboard &rarr;
+                </a>
+            </p>
+        ", $subject);
+
+        self::sendAsync($citcTeam, $subject, $body, 'sendApprovedByL2');
+    }
+
+    // ── 4. CITC COMPLETED → NOTIFY REQUESTER ─────────────────────
     /**
      * After CITC marks a request complete, notify the requester
      * that their service is now active/fulfilled.
@@ -160,7 +223,7 @@ class NotificationMailer
         string $requesterEmail,
         string $serviceType
     ): void {
-        $subject = "[IIT Indore] ✅ {$serviceType} Request Fulfilled";
+        $subject = "{$serviceType} Request Fulfilled";
 
         $body = self::wrap("
             <p>Dear <strong>{$requesterName}</strong>,</p>
@@ -206,7 +269,7 @@ class NotificationMailer
         string $reason,
         int    $rejectedByLevel
     ): void {
-        $subject = "[IIT Indore] ❌ {$serviceType} Request Rejected";
+        $subject = " {$serviceType} Request Rejected";
 
         $levelName = match($rejectedByLevel) {
             1 => 'Level 1 Approver (Faculty/Staff)',

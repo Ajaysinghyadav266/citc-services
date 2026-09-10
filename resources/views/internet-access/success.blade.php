@@ -62,7 +62,7 @@
             </div>
             <div class="flex items-start gap-3">
                 <span class="text-blue-400 mt-0.5">②</span>
-                <span>CITC team verifies your device details and MAC address.</span>
+                <span>CITC team verifies your details .</span>
             </div>
             <div class="flex items-start gap-3">
                 <span class="text-blue-400 mt-0.5">③</span>

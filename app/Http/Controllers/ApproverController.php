@@ -14,9 +14,8 @@ use App\Services\NotificationMailer;
 
 class ApproverController extends Controller
 {
-    // ─── CONSTANTS ───────────────────────────────────────────────
-    const DOITA_EMAIL = 'ftest@iiti.ac.in';
-    const CITC_DEPT   = 'Computer and Information Technology Center (CITC)';
+    // ─── CONSTANTS (now read from .env — change DOITA_EMAIL / CITC_DEPT_KEYWORD there) ─
+    // (no hardcoded constants — values come from env() at runtime)
 
     // ─── LOGIN PAGE ───────────────────────────────────────────────
     public function login()
@@ -27,8 +26,11 @@ class ApproverController extends Controller
     // ─── DETECT LEVEL (called from AuthController after OAuth) ────
     public static function detectApproverLevel(string $email): int
     {
-        // Level 2: fixed dean email
-        if (strtolower($email) === self::DOITA_EMAIL) {
+        $doitaEmail      = strtolower(env('DOITA_EMAIL', 'doita@iiti.ac.in'));
+        $citcDeptKeyword = env('CITC_DEPT_KEYWORD', 'Computer and Information Technology Center');
+
+        // Level 2: Dean IT email (configurable via .env → DOITA_EMAIL)
+        if (strtolower($email) === $doitaEmail) {
             return 2;
         }
 
@@ -45,8 +47,8 @@ class ApproverController extends Controller
 
         $dept = $userData['department'] ?? '';
 
-        // Level 3: CITC department
-        if (str_contains($dept, 'Computer and Information Technology Center')) {
+        // Level 3: CITC department (configurable via .env → CITC_DEPT_KEYWORD)
+        if (str_contains($dept, $citcDeptKeyword)) {
             return 3;
         }
 
@@ -191,7 +193,8 @@ class ApproverController extends Controller
         foreach ($models as $model) {
             $query = $model::query();
             if ($level === 1) {
-                $query->where('approver_email', $email)->where('approval_status', '!=', 'pending');
+                $query->where('approver_email', $email)
+                      ->whereIn('approval_status', ['approved_by_1', 'approved_by_2', 'completed']);
             } elseif ($level === 2) {
                 $query->whereIn('approval_status', ['approved_by_2', 'completed']);
             }
@@ -396,7 +399,14 @@ class ApproverController extends Controller
                 'approver2_name'   => $name,
                 'approved_by_2_at' => Carbon::now(),
             ]);
-            // No mail here — CITC team will see it in their dashboard
+            // Notify CITC team that a request is ready for their action
+            NotificationMailer::sendApprovedByL2(
+                $requesterName,
+                $requesterEmail ?? '',
+                $serviceType,
+                $rec->approver1_name ?? $rec->approver_name ?? 'L1 Approver',
+                $name
+            );
         } elseif ($level === 3 && $rec->approval_status === 'approved_by_2') {
             $rec->update([
                 'approval_status'   => 'completed',
