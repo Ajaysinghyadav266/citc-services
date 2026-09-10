@@ -145,8 +145,8 @@
             };
 
             $statusBadge = match($status) {
-                'pending'       => ['text' => 'Pending Recommendation', 'class' => 'bg-amber-50 text-amber-700 border-amber-200', 'dot' => 'bg-amber-500'],
-                'approved_by_1' => ['text' => 'Recommended — Awaiting Dean Approval', 'class' => 'bg-blue-50 text-blue-700 border-blue-200', 'dot' => 'bg-blue-500'],
+                'pending'       => ['text' => 'Pending Level 1 Approval', 'class' => 'bg-amber-50 text-amber-700 border-amber-200', 'dot' => 'bg-amber-500'],
+                'approved_by_1' => ['text' => 'Level 1 Approved (Awaiting Dean)', 'class' => 'bg-blue-50 text-blue-700 border-blue-200', 'dot' => 'bg-blue-500'],
                 'approved_by_2' => ['text' => 'Level 2 Approved (Awaiting CITC)', 'class' => 'bg-indigo-50 text-indigo-700 border-indigo-200', 'dot' => 'bg-indigo-500'],
                 'completed'     => ['text' => 'Completed & Service Active', 'class' => 'bg-green-50 text-green-700 border-green-200', 'dot' => 'bg-green-500'],
                 'rejected'      => ['text' => 'Rejected', 'class' => 'bg-red-50 text-red-700 border-red-200', 'dot' => 'bg-red-500'],
@@ -282,7 +282,7 @@
                         </div>
                     </div>
 
-                    <!-- STEP 2: Recommender (L1) -->
+                    <!-- STEP 2: Level 1 Approver -->
                     <div class="relative flex items-start gap-4 z-10" id="step2Container">
                         <div id="step2Icon" class="w-10 h-10 rounded-full bg-gray-200 text-gray-500 flex items-center justify-center shrink-0 shadow-md">
                             2
@@ -292,7 +292,7 @@
                                 <h5 class="text-sm font-bold text-gray-900">2. Faculty / Staff Approval (Level 1)</h5>
                                 <span id="step2Badge" class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-gray-100 text-gray-600">Pending</span>
                             </div>
-                            <p id="step2Approver" class="text-xs text-gray-700 font-medium mt-1">Recommender: —</p>
+                            <p id="step2Approver" class="text-xs text-gray-700 font-medium mt-1">Approver: —</p>
                             <p id="step2Desc" class="text-xs text-gray-500 mt-0.5">Awaiting review by faculty/staff.</p>
                             <div id="step2RejectionBox" class="hidden mt-2 p-3 bg-red-50 border border-red-200 rounded-xl text-xs text-red-800">
                                 <strong>Rejection Reason:</strong> <span id="step2ReasonText"></span>
@@ -300,7 +300,7 @@
                         </div>
                     </div>
 
-                    <!-- STEP 3: Level 2 (Dean IT) -->
+                    <!-- STEP 3: Level 2 Approver (Dean IT) -->
                     <div class="relative flex items-start gap-4 z-10" id="step3Container">
                         <div id="step3Icon" class="w-10 h-10 rounded-full bg-gray-200 text-gray-500 flex items-center justify-center shrink-0 shadow-md">
                             3
@@ -451,7 +451,7 @@ function openTimelineModal(req) {
 
     const approver1Name  = req.approver1_name || req.approver_name || 'Designated Faculty/Staff';
     const approver1Email = req.approver1_email || req.approver_email || '';
-    document.getElementById('step2Approver').textContent = `Recommender: ${approver1Name} (${approver1Email})`;
+    document.getElementById('step2Approver').textContent = `Approver: ${approver1Name} (${approver1Email})`;
 
     const step2Icon = document.getElementById('step2Icon');
     const step2Badge = document.getElementById('step2Badge');
@@ -474,7 +474,7 @@ function openTimelineModal(req) {
         setRejectedIcon(step2Icon);
         step2Badge.className = 'text-xs font-semibold px-2.5 py-0.5 rounded-full bg-red-100 text-red-700';
         step2Badge.textContent = 'Rejected';
-        step2Desc.textContent = 'Rejected by Recommender.';
+        step2Desc.textContent = 'Rejected by Level 1 approver.';
         step2RejBox.classList.remove('hidden');
         document.getElementById('step2ReasonText').textContent = rejReason;
     } else {

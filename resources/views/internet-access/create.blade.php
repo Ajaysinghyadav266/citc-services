@@ -59,21 +59,21 @@
 
     </div>
 
-    <!-- SECTION 2: Recommender Details -->
-    <h2 class="text-base font-semibold text-gray-700 mt-6 mb-3">Recommender Details</h2>
+    <!-- SECTION 2: Approver Details -->
+    <h2 class="text-base font-semibold text-gray-700 mt-6 mb-3">Approver Details</h2>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
 
         <div>
-            <label class="text-sm font-medium text-gray-600">Recommender Email <span class="text-red-500">*</span></label>
+            <label class="text-sm font-medium text-gray-600">Approver Email <span class="text-red-500">*</span></label>
             <input type="email" id="approver_email" name="approver_email"
                 value="{{ old('approver_email') }}"
-                placeholder="recommender@iiti.ac.in"
+                placeholder="approver@iiti.ac.in"
                 class="w-full border border-gray-300 rounded-lg p-2.5 text-sm mt-1 focus:ring-2 focus:ring-blue-400 focus:outline-none">
         </div>
 
         <div>
-            <label class="text-sm font-medium text-gray-600">Recommender Name</label>
+            <label class="text-sm font-medium text-gray-600">Approver Name</label>
             <input type="text" id="approver_name" name="approver_name"
                 value="{{ old('approver_name') }}" readonly
                 class="w-full border border-gray-200 rounded-lg p-2.5 bg-gray-50 text-sm mt-1">

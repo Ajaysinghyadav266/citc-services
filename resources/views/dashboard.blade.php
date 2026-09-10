@@ -105,7 +105,7 @@
             <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
         </svg>
         <p class="text-blue-700 text-sm">
-            All requests require recommendation from your designated recommender, followed by Dean IT and CITC approval. You will be notified by email once your request is processed.
+            All requests require approval from your designated approver. You will be notified by email once your request is processed.
             For support, contact <span class="font-semibold">citc@iiti.ac.in</span>.
         </p>
     </div>
