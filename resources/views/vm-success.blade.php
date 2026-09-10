@@ -50,7 +50,7 @@
         <p class="fade-up delay-500 text-blue-200 text-sm leading-relaxed mb-8">
             Your <span class="text-white font-semibold">VM Request</span> has been submitted successfully.<br>
             A confirmation email has been sent to your institutional address.<br><br>
-            Your request is currently <span class="bg-amber-400/20 text-amber-300 font-semibold px-2 py-0.5 rounded-full text-xs">Pending Recommendation</span>
+            Your request is currently <span class="bg-amber-400/20 text-amber-300 font-semibold px-2 py-0.5 rounded-full text-xs">Pending Approval</span>
         </p>
 
         {{-- Details card --}}
@@ -58,7 +58,7 @@
             <p class="text-white font-semibold text-xs uppercase tracking-widest mb-3">What happens next?</p>
             <div class="flex items-start gap-3">
                 <span class="text-blue-400 mt-0.5">①</span>
-                <span>Your recommender receives a notification to review and recommend your request.</span>
+                <span>Your approver receives a notification to review your request.</span>
             </div>
             <div class="flex items-start gap-3">
                 <span class="text-blue-400 mt-0.5">②</span>

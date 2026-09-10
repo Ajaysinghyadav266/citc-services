@@ -33,14 +33,14 @@
         'Web Hosting'     => 'bg-orange-100 text-orange-700',
     ];
     $statusLabels = [
-        'pending'       => 'Pending Recommendation',
-        'approved_by_1' => 'Recommended (Awaiting Dean)',
-        'approved_by_2' => 'Dean Approved',
+        'pending'       => 'Pending L1',
+        'approved_by_1' => 'Approved L1',
+        'approved_by_2' => 'Approved L2',
         'completed'     => 'Completed',
         'rejected'      => 'Rejected',
     ];
     function stageInfo(string $status): array {
-        $stages = ['Recommender','Dean IT','CITC'];
+        $stages = ['L1 Approval','L2 Approval','CITC Complete'];
         $done = match($status) {
             'pending'       => 0,
             'approved_by_1' => 1,

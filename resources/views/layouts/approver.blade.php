@@ -96,7 +96,7 @@
                 @php
                     $lvl = session('approver_level', 1);
                     $lvlClass = ['level-badge-1','level-badge-2','level-badge-3'][$lvl - 1] ?? 'level-badge-1';
-                    $lvlLabel = ['L1 · Recommender','L2 · Dean IT','L3 · CITC'][$lvl - 1] ?? 'Approver';
+                    $lvlLabel = ['L1 · Approver','L2 · Dean IT','L3 · CITC'][$lvl - 1] ?? 'Approver';
                 @endphp
                 <span class="hidden sm:inline-flex items-center text-[11px] font-bold px-2.5 py-1 rounded-full {{ $lvlClass }}">
                     {{ $lvlLabel }}

@@ -86,7 +86,7 @@ class SendPendingReminders extends Command
         return Command::SUCCESS;
     }
 
-    // ── Reminder email to Recommender (L1) ──────────────────────────────
+    // ── Reminder email to Level 1 approver ───────────────────────
     private function sendReminderL1(
         string $approverEmail,
         string $approverName,
@@ -147,7 +147,7 @@ class SendPendingReminders extends Command
             <p>Dear Dean IT,</p>
 
             <p>This is a reminder that a <strong>{$serviceType}</strong> request has already been
-            recommended by the Recommender but has been
+            approved by the Level 1 approver but has been
             <span style='color:#d97706;font-weight:700;'>waiting for your approval (Level 2) for over {$hoursStale} hours</span>.</p>
 
             <table style='border-collapse:collapse;width:100%;margin-top:16px;'>
@@ -160,7 +160,7 @@ class SendPendingReminders extends Command
                     <td style='padding:8px 12px;border:1px solid #fde68a;'>{$requesterName} &lt;{$requesterEmail}&gt;</td>
                 </tr>
                 <tr>
-                    <td style='padding:8px 12px;background:#fef9c3;font-weight:600;border:1px solid #fde68a;'>Recommended By</td>
+                    <td style='padding:8px 12px;background:#fef9c3;font-weight:600;border:1px solid #fde68a;'>Approved by L1</td>
                     <td style='padding:8px 12px;border:1px solid #fde68a;'>{$approver1Name}</td>
                 </tr>
                 <tr>

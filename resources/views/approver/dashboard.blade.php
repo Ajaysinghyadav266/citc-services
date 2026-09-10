@@ -7,7 +7,7 @@
 @php
     $lvl       = session('approver_level', 1);
     $firstName = explode(' ', Auth::user()->name)[0];
-    $lvlName   = ['Recommender', 'Dean of IT Infrastructure', 'CITC Team'][$lvl - 1] ?? 'Approver';
+    $lvlName   = ['Faculty/Staff Approver', 'Dean of IT Infrastructure', 'CITC Team'][$lvl - 1] ?? 'Approver';
     $accentMap = [
         1 => ['ring'=>'ring-indigo-500','badge'=>'bg-indigo-100 text-indigo-800','icon'=>'text-indigo-600','bg'=>'bg-indigo-50'],
         2 => ['ring'=>'ring-emerald-500','badge'=>'bg-emerald-100 text-emerald-800','icon'=>'text-emerald-600','bg'=>'bg-emerald-50'],
