@@ -142,7 +142,8 @@
                     <span class="text-blue-600">CITC Services</span>
                 </h1>
                 <p class="text-slate-500 text-base leading-relaxed mb-8 max-w-md mx-auto lg:mx-0">
-                    
+                    Request and manage all IT infrastructure services — VPN access, Internet access,
+                    Virtual Machines, and Web Hosting — in one place.
                 </p>
                 <a href="/login" class="login-btn inline-block text-center">
                     Login to Dashboard →
