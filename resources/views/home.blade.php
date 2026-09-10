@@ -136,7 +136,7 @@
 
             <!-- LEFT: Hero text -->
             <div class="flex-1 text-center lg:text-left pt-4">
-                <p class="text-blue-600 font-semibold text-sm mb-3 tracking-wide">Indian Institute of Technology Bombay</p>
+                <p class="text-blue-600 font-semibold text-sm mb-3 tracking-wide">Indian Institute of Technology Indore</p>
                 <h1 class="text-4xl lg:text-5xl font-extrabold text-slate-800 leading-tight mb-4">
                     Welcome to<br>
                     <span class="text-blue-600">CITC Services</span>
