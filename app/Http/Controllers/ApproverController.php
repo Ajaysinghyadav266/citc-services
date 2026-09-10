@@ -26,7 +26,7 @@ class ApproverController extends Controller
     // ─── DETECT LEVEL (called from AuthController after OAuth) ────
     public static function detectApproverLevel(string $email): int
     {
-        $doitaEmail      = strtolower(env('DOITA_EMAIL', 'doita@iiti.ac.in'));
+        $doitaEmail      = strtolower(env('DOITA_EMAIL', ''));
         $citcDeptKeyword = env('CITC_DEPT_KEYWORD', 'Computer and Information Technology Center');
 
         // Level 2: Dean IT email (configurable via .env → DOITA_EMAIL)
